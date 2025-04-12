@@ -1,5 +1,6 @@
-// src/pages/Saved.jsx
-import { useEffect, useState } from 'react';
+// Saved.jsx
+import React, { useEffect, useState } from 'react';
+import './Saved.css'; // ✅ 꼭 넣어주세요!
 
 const Saved = () => {
     const [savedList, setSavedList] = useState([]);
@@ -16,26 +17,23 @@ const Saved = () => {
     };
 
     return (
-        <div>
+        <div className="saved-container">
+            {' '}
+            {/* ✅ 클래스명 주의 */}
             <h2>My Saved Shows</h2>
-            {savedList.length === 0 ? (
-                <p>No saved shows yet.</p>
-            ) : (
-                <ul>
-                    {savedList.map((item) => (
-                        <li key={item.id}>
-                            <h4>{item.name}</h4>
-                            {item.image && (
-                                <img src={item.image} alt={item.name} />
-                            )}
-                            <br />
-                            <button onClick={() => handleRemove(item.id)}>
-                                🗑 Remove
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <ul className="saved-list">
+                {' '}
+                {/* ✅ 여기서 list-style: none; 적용 */}
+                {savedList.map((item) => (
+                    <li key={item.id} className="saved-item">
+                        <img src={item.image} alt={item.name} />
+                        <h4>{item.name}</h4>
+                        <button onClick={() => handleRemove(item.id)}>
+                            Remove
+                        </button>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };
