@@ -1,12 +1,9 @@
-// src/components/NavBar.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// HoverLink 컴포넌트: 마우스 오버시 색상과 위치가 변경되도록 함
 const HoverLink = ({ to, children, style }) => {
     const [hover, setHover] = useState(false);
 
-    // 기본 스타일과 호버 시 스타일 병합
     const combinedStyle = {
         ...style,
         ...(hover && {

@@ -1,16 +1,35 @@
-// src/pages/Home.jsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'; // 스타일 파일을 만들어서 임포트 (예시)
+import './Home.css';
 
 const Home = () => {
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState('a');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        searchShows();
+    }, []);
+
+    const handleSaveFromHome = (show) => {
+        const saved = JSON.parse(localStorage.getItem('savedShows')) || [];
+        const exists = saved.find((item) => item.id === show.id);
+
+        if (!exists) {
+            saved.push({
+                id: show.id,
+                name: show.name,
+                image: show.image?.medium,
+            });
+            localStorage.setItem('savedShows', JSON.stringify(saved));
+            alert('Saved!');
+        } else {
+            alert('Already saved!');
+        }
+    };
+
     const searchShows = async () => {
         if (!query.trim()) return;
-
         setLoading(true);
         try {
             const res = await fetch(
@@ -20,7 +39,6 @@ const Home = () => {
             setResults(data);
         } catch (err) {
             console.error('API Error:', err);
-            // 에러 메시지를 사용자에게 표시할 수도 있음
         } finally {
             setLoading(false);
         }
@@ -43,16 +61,31 @@ const Home = () => {
                 <ul className="results-list">
                     {results.map((item) => (
                         <li key={item.show.id} className="result-item">
+                            <img
+                                src={
+                                    item.show.image
+                                        ? item.show.image.medium
+                                        : ''
+                                }
+                                alt={item.show.name}
+                            />
                             <h3>{item.show.name}</h3>
-                            {item.show.image && (
-                                <img
-                                    src={item.show.image.medium}
-                                    alt={item.show.name}
-                                />
-                            )}
-                            <Link to={`/detail/${item.show.id}`}>
-                                More Info
-                            </Link>
+                            <div className="card-footer">
+                                <Link
+                                    to={`/detail/${item.show.id}`}
+                                    className="more-info"
+                                >
+                                    More Info
+                                </Link>
+                                <button
+                                    onClick={() =>
+                                        handleSaveFromHome(item.show)
+                                    }
+                                    className="heart-button"
+                                >
+                                    ♥
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>

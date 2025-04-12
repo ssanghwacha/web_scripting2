@@ -1,6 +1,5 @@
-// Saved.jsx
 import React, { useEffect, useState } from 'react';
-import './Saved.css'; // ✅ 꼭 넣어주세요!
+import './Saved.css';
 
 const Saved = () => {
     const [savedList, setSavedList] = useState([]);
@@ -19,11 +18,9 @@ const Saved = () => {
     return (
         <div className="saved-container">
             {' '}
-            {/* ✅ 클래스명 주의 */}
             <h2>My Saved Shows</h2>
             <ul className="saved-list">
                 {' '}
-                {/* ✅ 여기서 list-style: none; 적용 */}
                 {savedList.map((item) => (
                     <li key={item.id} className="saved-item">
                         <img src={item.image} alt={item.name} />
